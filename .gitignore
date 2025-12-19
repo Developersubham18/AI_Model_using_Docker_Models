@@ -1,0 +1,2 @@
+# Ignore dependencies (can be reinstalled)
+node_modules/
