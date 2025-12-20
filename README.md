@@ -6,7 +6,7 @@ The AI model runs **internally inside Docker** (not exposed publicly), while the
 ---
 ## 🖥️ UI Preview
 
-![AI Virtual Assistant UI](assets/ui-preview.png)
+![AI Virtual Assistant UI](ui.png)
 
 ## 🚀 Tech Stack
 
