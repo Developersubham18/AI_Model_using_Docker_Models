@@ -1,4 +1,4 @@
-# 🤖 AI Virtual Assistant – Docker Model Based Architecture
+# 🤖 AI Model – Docker Model Based Architecture
 
 This project is an **AI-powered Virtual Assistant** built with a **Dockerized AI model**, a **Node.js backend**, and a **React.js frontend**.  
 The AI model runs **internally inside Docker** (not exposed publicly), while the backend securely communicates with it and serves responses to the frontend.
