@@ -1,8 +1,16 @@
+:root{
+  --bg: #f7fbff;
+  --card: #ffffff;
+  --primary: #0b74ff;
+  --muted: #65708a;
+  --accent: linear-gradient(90deg,#7f5aff,#2dd4bf);
+}
+*{box-sizing:border-box}
+html,body,#root{height:100%;font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
@@ -48,65 +56,82 @@
   gap: 20px;
   padding: 20px;
   box-sizing: border-box;
+  background: var(--bg);
 }
 .assistant-side {
-  width: 220px;
-  background: linear-gradient(180deg,#fff,#f7f9ff);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 6px 18px rgba(20,20,60,0.06);
+  width: 240px;
+  background: linear-gradient(180deg,var(--card),#f1f6ff);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(16,24,40,0.06);
   text-align: center;
 }
 .assistant-avatar{
   width: 96px;
   height: 96px;
   margin-bottom: 8px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(11,116,255,0.12);
 }
 .assistant-desc{
-  color:#666;
-  font-size:0.9rem;
+  color:var(--muted);
+  font-size:0.95rem;
 }
 .chat-area{
   flex:1;
   display:flex;
   flex-direction:column;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(20,20,60,0.04);
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(20,20,60,0.06);
   overflow: hidden;
 }
 .chat-header{
-  padding: 14px 18px;
-  font-weight:600;
-  border-bottom: 1px solid #eee;
+  padding: 16px 20px;
+  font-weight:700;
+  border-bottom: 1px solid #f0f3f8;
+  display:flex;align-items:center;justify-content:space-between;
 }
+.chat-header .new-chat{background:transparent;border:1px solid rgba(11,116,255,0.08);padding:6px 10px;border-radius:10px;margin-right:8px;color:var(--primary);cursor:pointer}
+.chat-header .new-chat:hover{background:rgba(11,116,255,0.04)}
 .messages{
-  padding: 16px;
+  padding: 18px;
   flex:1;
   overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
 }
-.message{display:flex}
+.message{display:flex;align-items:flex-end;gap:12px}
 .message.assistant{justify-content:flex-start}
 .message.user{justify-content:flex-end}
+.msg-avatar-wrap{width:40px;flex-shrink:0}
+.msg-avatar{width:40px;height:40px;border-radius:10px}
+.msg-avatar.user-avatar{display:flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;font-weight:700;border-radius:10px}
+.msg-content{display:flex;flex-direction:column;align-items:flex-start}
 .bubble{
-  max-width:70%;
-  padding:10px 14px;
-  border-radius:16px;
-  background:#f1f3ff;
+  max-width:68%;
+  padding:12px 16px;
+  border-radius:14px;
+  background:#f1f6ff;
   color:#111;
+  line-height:1.45;
 }
-.message.user .bubble{background:#0b74ff;color:#fff}
+.message.user .msg-content{align-items:flex-end}
+.message.user .bubble{background:var(--primary);color:#fff}
+.message.user .msg-avatar-wrap{order:2}
+.message.user .msg-content{order:1}
+.message.assistant .msg-avatar-wrap{order:1}
+.message.assistant .msg-content{order:2}
+.msg-meta{margin-top:6px;font-size:11px;color:var(--muted)}
 .input-row{
   display:flex;
   gap:8px;
-  padding:12px;
-  border-top:1px solid #eee;
+  padding:14px;
+  border-top:1px solid #f0f3f8;
 }
-.input-row input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid #ddd}
-.input-row button{padding:10px 16px;border-radius:8px;background:#0b74ff;color:#fff;border:none}
+.input-row input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid #e6eefc;background:transparent}
+.input-row button{padding:10px 18px;border-radius:12px;background:var(--primary);color:#fff;border:none}
 
 .file-upload{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:8px;border:1px solid #d0d7e7;background:transparent;cursor:pointer}
 .file-upload input{display:none}
@@ -115,6 +140,24 @@
   .assistant-app{flex-direction:column}
   .assistant-side{width:100%;display:flex;align-items:center;gap:12px}
 }
+
+/* Copy button */
+.copy-btn{margin-left:8px;background:transparent;border:1px solid rgba(11,116,255,0.08);padding:6px 8px;border-radius:8px;font-size:12px;color:var(--primary);cursor:pointer}
+.copy-btn.copied{background:rgba(11,116,255,0.06);color:var(--primary);border-color:transparent}
+.copy-btn:focus{outline:2px solid rgba(11,116,255,0.12);outline-offset:2px}
+
+/* Scrollbar polish */
+.messages::-webkit-scrollbar{width:10px;height:10px}
+.messages::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#cfe8ff,#7fc6ff);border-radius:10px}
+.messages::-webkit-scrollbar-track{background:transparent}
+
+/* Accessible focus states */
+button:focus, input:focus{outline:2px solid rgba(11,116,255,0.12);outline-offset:2px}
+
+/* Hover effects */
+.message .bubble:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(11,116,255,0.04)}
+
+
 
 /* Dark theme */
 .assistant-app.dark {
@@ -142,3 +185,20 @@
 .mic{background:transparent;border:1px solid #d0d7e7;border-radius:8px;padding:6px 10px;cursor:pointer}
 .mic.listening{background:linear-gradient(90deg,#ff6b6b,#ff3d3d);color:#fff;border-color:transparent}
 .message.interim .bubble{opacity:0.8;font-style:italic}
+
+/* Typing indicator */
+.bubble.typing{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:linear-gradient(90deg,#f6f7ff,#eef4ff)}
+.bubble.typing .dot{width:8px;height:8px;border-radius:50%;background:#0b74ff;opacity:0.5;animation:blink 1s infinite}
+.bubble.typing .dot:nth-child(2){animation-delay:0.15s}
+.bubble.typing .dot:nth-child(3){animation-delay:0.3s}
+@keyframes blink{0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3}}
+
+/* Subtle UI polish */
+.chat-area{border-radius:16px}
+.bubble{transition:all 160ms ease;box-shadow:0 6px 18px rgba(20,20,60,0.03)}
+.input-row button{transition:transform 120ms ease, box-shadow 120ms ease}
+.input-row button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(11,116,255,0.18)}
+
+/* Dark-theme typing tweaks */
+.assistant-app.dark .bubble.typing{background:linear-gradient(90deg,#071427,#09263a)}
+.assistant-app.dark .bubble.typing .dot{background:#9fc6ff;opacity:0.6}

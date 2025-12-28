@@ -7,6 +7,13 @@ export default defineConfig({
    server: {
     host: "0.0.0.0",   // 🔑 allow external access
     port: 5173,        // optional (default is 5173)
-    strictPort: true   // optional (fails if port busy)
+    strictPort: true,  // optional (fails if port busy)
+    proxy: {
+      '/api': {
+        target: 'http://44.223.169.80:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
