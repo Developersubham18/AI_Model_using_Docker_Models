@@ -10,9 +10,7 @@ function App() {
   const [dark, setDark] = useState(true);
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
-  const [streaming, setStreaming] = useState(false);
   const [copied, setCopied] = useState(null);
-  const streamRef = useRef(null);
   const endRef = useRef(null);
 
   // human-friendly short time (relative)
@@ -36,6 +34,14 @@ function App() {
     } catch (e) {
       console.warn('copy failed', e);
     }
+  };
+
+  // truncate text to a maximum number of words
+  const truncateWords = (text, limit = 20) => {
+    if (!text) return text;
+    const words = String(text).trim().split(/\s+/).filter(Boolean);
+    if (words.length <= limit) return text;
+    return words.slice(0, limit).join(' ') + '...';
   };
 
   useEffect(() => {
@@ -83,50 +89,20 @@ function App() {
   const sendTextMessage = async (text) => {
     if (!text || !text.trim()) return;
     // add user message
-    setMessages(prev => [...prev, { role: "user", text, time: Date.now() }]);
+    setMessages(prev => [...prev, { role: 'user', text, time: Date.now() }]);
 
-    // append an empty assistant message we'll fill progressively
-    setMessages(prev => [...prev, { role: "assistant", text: "", time: Date.now() }]);
-    setStreaming(true);
-
-    // close previous stream if any
-    if (streamRef.current) {
-      try { streamRef.current.close(); } catch (e) {}
-      streamRef.current = null;
-    }
-
-    // EventSource to backend SSE endpoint
-    const url = `/api/chat-stream?message=${encodeURIComponent(text)}`;
-    const es = new EventSource(url);
-    streamRef.current = es;
-
-    es.onmessage = (e) => {
-      // e.data contains small chunks (we send words/spaces)
-      const chunk = e.data.replace(/\\n/g, '\n');
-      setMessages(prev => {
-        const msgs = [...prev];
-        for (let i = msgs.length - 1; i >= 0; i--) {
-          if (msgs[i].role === 'assistant') {
-            msgs[i] = { ...msgs[i], text: (msgs[i].text || '') + chunk };
-            break;
-          }
-        }
-        return msgs;
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
       });
-    };
-
-    es.addEventListener('done', () => {
-      setStreaming(false);
-      try { es.close(); } catch (e) {}
-      streamRef.current = null;
-    });
-
-    es.addEventListener('error', (ev) => {
-      setStreaming(false);
-      setMessages(prev => [...prev, { role: 'assistant', text: 'Error: streaming failed.', time: Date.now() }]);
-      try { es.close(); } catch (e) {}
-      streamRef.current = null;
-    });
+      const data = await res.json();
+      const reply = truncateWords(data.reply ?? 'Sorry, no reply.', 20);
+      setMessages(prev => [...prev, { role: 'assistant', text: reply, time: Date.now() }]);
+    } catch (err) {
+      setMessages(prev => [...prev, { role: 'assistant', text: 'Error: could not reach backend.', time: Date.now() }]);
+    }
   };
 
   const sendMessage = async () => {
@@ -271,15 +247,7 @@ function App() {
             </div>
           )}
 
-          {streaming && (
-            <div className="message assistant">
-              <div className="bubble typing">
-                <span className="dot" />
-                <span className="dot" />
-                <span className="dot" />
-              </div>
-            </div>
-          )}
+
 
           <div ref={endRef} />
         </div>

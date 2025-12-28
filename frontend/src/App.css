@@ -179,6 +179,10 @@ button:focus, input:focus{outline:2px solid rgba(11,116,255,0.12);outline-offset
 .assistant-app.dark .message.user .bubble{background:#1660ff}
 .assistant-app.dark .assistant-desc{color:#9fc6ff}
 
+/* Ensure typing / input text is white in dark mode */
+.assistant-app.dark input{ color: #fff; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.06) }
+.assistant-app.dark .message.interim .bubble{ color: #fff }
+
 .theme-toggle{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:inherit}
 .header-actions{display:inline-flex;gap:8px;float:right}
 
